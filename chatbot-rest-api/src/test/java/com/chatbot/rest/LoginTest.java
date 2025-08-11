@@ -1,21 +1,89 @@
 package com.chatbot.rest;
 
-import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 
-import static io.restassured.RestAssured.given;
+import java.util.HashMap;
+import java.util.Map;
 
-public class LoginTest {
+import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.startsWith;
+
+ class LoginTest {
+
+    final String LOGIN_URL = "http://localhost:5000//api/auth/login";
 
     // testy do #8
     @Test
-    void loginGetEndpointTest() {
-
-        RestAssured.baseURI = "http://localhost:5000";
-
-        given()
-                .when()
-                .get("/login")
+    void shouldReturn200StatusCodeWhenGettingLoginPageTest() {
+        when().get(LOGIN_URL)
                 .then().statusCode(200);
+    }
+    // testy do #9
+    @Test
+    void shouldReturn200StatusCodeWhenUserIsLoggedInTest() {
+        Map<String, Object> postBody = new HashMap<>();
+        postBody.put("email", "bozena");
+        postBody.put("password", "hoho3");
+
+        given().contentType(ContentType.JSON).
+                and().body(postBody).
+                when().post(LOGIN_URL).
+                then().statusCode(200).
+                and().body("message", is("Login successful"))
+                .and().body("token", startsWith("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE3NTQ5ND"))
+                .and().body("user_id", is(1));
+    }
+
+    @Test
+    void shouldReturn400StatusCodeWhenOnlyEmailProvidedTest() {
+        Map<String, Object> postBody = new HashMap<>();
+        postBody.put("email", "bozena");
+
+        given().contentType(ContentType.JSON).
+                and().body(postBody).
+                when().post(LOGIN_URL).
+                then().statusCode(400).
+                and().body("error", is("Email and password are required"));
+    }
+
+    @Test
+    void shouldReturn400StatusCodeWhenOnlyPasswordProvidedTest() {
+        Map<String, Object> postBody = new HashMap<>();
+        postBody.put("password", "hoho3");
+
+        given().contentType(ContentType.JSON).
+                and().body(postBody).
+                when().post(LOGIN_URL).
+                then().statusCode(400).
+                and().body("error", is("Email and password are required"));
+    }
+
+    @Test
+    void shouldReturn400StatusCodeWhenWrongEmailTest() {
+        Map<String, Object> postBody = new HashMap<>();
+        postBody.put("email", "bozenaha");
+        postBody.put("password", "hoho3");
+
+        given().contentType(ContentType.JSON).
+                and().body(postBody).
+                when().post(LOGIN_URL).
+                then().statusCode(401).
+                and().body("error", is("Invalid email"));
+    }
+
+    @Test
+    void shouldReturn400StatusCodeWhenWrongPasswordTest() {
+        Map<String, Object> postBody = new HashMap<>();
+        postBody.put("email", "bozena");
+        postBody.put("password", "hoho34");
+
+        given().contentType(ContentType.JSON).
+                and().body(postBody).
+                when().post(LOGIN_URL).
+                then().statusCode(401).
+                and().body("error", is("Invalid password"));
     }
 }
