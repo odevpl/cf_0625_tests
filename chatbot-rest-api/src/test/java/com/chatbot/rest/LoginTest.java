@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 
-public class LoginTest {
+class LoginTest {
 
     // testy do #8
     @Test
@@ -15,7 +15,8 @@ public class LoginTest {
 
         given()
                 .when()
-                .get("/login")
+                .get("/api/auth/login")
+                //the correct URL should be "/login"
                 .then().statusCode(200);
     }
 }

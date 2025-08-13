@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 
-class ChatEndpointTest {
+class ChatTest {
 
     //testy to task #10
     @Test

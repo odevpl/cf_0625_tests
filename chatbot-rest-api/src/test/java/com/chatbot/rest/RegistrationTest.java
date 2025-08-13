@@ -15,7 +15,8 @@ class RegistrationTest {
 
         given()
                 .when()
-                .get("/register")
+                .get("/api/auth/register")
+                //the correct URL should be "/register"
                 .then().statusCode(200);
     }
 }
