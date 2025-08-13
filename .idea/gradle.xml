@@ -9,8 +9,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/chatbot-SeleniumTests" />
             <option value="$PROJECT_DIR$/chatbot-rest-api" />
+            <option value="$PROJECT_DIR$/chatbot-selenium-tests" />
           </set>
         </option>
       </GradleProjectSettings>
