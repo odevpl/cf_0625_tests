@@ -1,2 +1,4 @@
 rootProject.name = 'cf_0625_tests'
+include 'chatbot-rest-api'
+include 'chatbot-selenium-tests'
 
