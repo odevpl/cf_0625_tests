@@ -62,7 +62,7 @@ class LoginTest {
     }
 
     @Test
-    void shouldReturn400StatusCodeWhenWrongEmailTest() {
+    void shouldReturn401StatusCodeWhenWrongEmailTest() {
         Map<String, Object> postBody = new HashMap<>();
         postBody.put("email", "bozenaha");
         postBody.put("password", "hoho3");
@@ -75,7 +75,7 @@ class LoginTest {
     }
 
     @Test
-    void shouldReturn400StatusCodeWhenWrongPasswordTest() {
+    void shouldReturn401StatusCodeWhenWrongPasswordTest() {
         Map<String, Object> postBody = new HashMap<>();
         postBody.put("email", "bozena");
         postBody.put("password", "hoho34");
