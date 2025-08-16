@@ -30,6 +30,12 @@ class ChatbotLoginPomTest {
 
     }
 
+    @Test
+    void test()
+    {
+        //proba
+    }
+
     @AfterEach
     void testDown() {
         driver.quit();
