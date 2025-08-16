@@ -17,7 +17,7 @@ class ChatbotLoginPomTest {
     void setup() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
-        driver.get("http://localhost:5000/api/auth/login");
+        driver.get("http://localhost:5000/login");
         chatBotLoginPom = new ChatbotLoginPom(driver);
     }
 
