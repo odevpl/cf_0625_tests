@@ -1,6 +1,5 @@
 package com.chatbot.rest;
 
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +12,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 
 class LoginTest {
-    final String LOGIN_URL = "http://localhost:5000//api/auth/login";
+    final String LOGIN_URL = "http://localhost:5000/login";
 
     @Test
     void shouldReturn200StatusCodeWhenGettingLoginPageTest() {
@@ -27,7 +26,6 @@ class LoginTest {
         postBody.put("email", "bozena");
         postBody.put("password", "hoho3");
 
-        RestAssured.baseURI = "http://localhost:5000";
         given().contentType(ContentType.JSON).
                 and().body(postBody).
                 when().post(LOGIN_URL).
