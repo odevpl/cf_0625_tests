@@ -40,6 +40,7 @@ class LoginPagePomTest {
         loginPage.submitForm();
 
         String currentUrl = driver.getCurrentUrl();
-        Assertions.assertTrue(currentUrl.contains("/login"), "Po wysłaniu formularza powinien nastąpić POST na /login");
+        Assertions.assertNotNull(currentUrl, "URL nie powinien być nullem");
+        Assertions.assertTrue(currentUrl.contains("/login"), "URL powinien zawierać /login");
     }
 }
