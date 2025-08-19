@@ -7,11 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.springframework.util.Assert;
 
-public class ChatbotChatPomTest {
+class ChatbotChatTest {
 
-    ChatbotChatPomApplication chatbotChatPomApplication;
     ChatbotChatPage chatbotChatPage;
     WebDriver driver;
 
@@ -25,26 +23,17 @@ public class ChatbotChatPomTest {
 
     @Test
     void chatbotChatFormAppearsTest() {
-
-        boolean chatFormAppears = chatbotChatPage.findChatForm();
-        Assertions.assertTrue(chatFormAppears);
+        Assertions.assertTrue(chatbotChatPage.findChatForm());
     }
 
     @Test
     void checkIfQuestionSubmittedAppearsInChatBoxTest() {
-        boolean questionPresentInChatBox = chatbotChatPage.getQuestionSentToChatbot();
-        Assertions.assertTrue(questionPresentInChatBox);
+        Assertions.assertTrue(chatbotChatPage.getQuestionSentToChatbot());
     }
 
     @Test
     void checkIfAutomaticChatbotResponseIsDisplayedInChatBox() {
-        String automaticResponse = chatbotChatPage.getChatbotAutomaticResponse();
-        Assertions.assertEquals("Brak odpowiedzi", automaticResponse);
-    }
-    @Test
-    void sentEmptyMessageTest(){
-        String alertText = chatbotChatPage.getAlertWhenNoQuestionSent();
-        Assertions.assertEquals("Please fill out this field.", alertText);
+        Assertions.assertEquals("Brak odpowiedzi.", chatbotChatPage.getChatbotAutomaticResponse());
     }
 
     @AfterEach

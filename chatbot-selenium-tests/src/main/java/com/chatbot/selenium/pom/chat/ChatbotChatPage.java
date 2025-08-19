@@ -1,13 +1,15 @@
 package com.chatbot.selenium.pom.chat;
 
 import com.chatbot.selenium.pom.AbstractWebDriverPom;
-import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
-import java.util.Objects;
 
 public class ChatbotChatPage extends AbstractWebDriverPom {
 
@@ -19,14 +21,14 @@ public class ChatbotChatPage extends AbstractWebDriverPom {
     @FindBy(xpath = "//*[@id=\"message\"]")
     WebElement questionField;
 
-    @FindBy(css = "#chat-box > div:nth-child(1)")
-    WebElement firstQuestionInChatForm;
+    @FindBy(xpath = "//*[@id=\"chat-box\"]/div[1]")
+    WebElement firstQuestionInChatBox;
 
-    @FindBy(css = "#chat-box div")
-    List<WebElement> chatbotResponse;
+    @FindBy(css = "#chat-box > div")
+    List<WebElement> conversationInChatBox;
 
     @FindBy(xpath = "//*[@id=\"chat-form\"]/button")
-    WebElement sendQuestionButton;
+    WebElement submitButton;
 
     public ChatbotChatPage(WebDriver driver) {
         super(driver);
@@ -36,41 +38,37 @@ public class ChatbotChatPage extends AbstractWebDriverPom {
         return chatForm.isDisplayed();
     }
 
-    public void sendMessageToChatbot() {
-        questionField.sendKeys(QUESTION_TO_CHATBOT);
-        sendQuestionButton.click();
-    }
-
     public boolean getQuestionSentToChatbot() {
         sendMessageToChatbot();
-        return firstQuestionInChatForm.isDisplayed();
+        return firstQuestionInChatBox.isDisplayed();
     }
 
     public String getChatbotAutomaticResponse() {
         sendMessageToChatbot();
-        String text = "Brak odpowiedzi.";
-        for (WebElement botResponse : chatbotResponse) {
-            text = botResponse.getText();
-        }
-        return text;
-    }
-    public String  getAlertWhenNoQuestionSent(){
-        sendQuestionButton.click();
-        Alert alert = driver.switchTo().alert();
-        String message = alert.getText();
-        alert.dismiss();
-        return message;
+        int oldCount = conversationInChatBox.size(); //current number of messages in chabox
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));  //waiting for a new answer
+        wait.until((ExpectedCondition<Boolean>) d -> {
+            assert d != null;
+            List<WebElement> updatedMessages = d.findElements(By.cssSelector("#chat-box > div"));
+            return updatedMessages.size() > oldCount;
+        });
+
+        List<WebElement> updatedMessages = driver.findElements(By.cssSelector("#chat-box > div"));
+        WebElement newMessage = updatedMessages.get(updatedMessages.size() - 1);
+        System.out.println(newMessage.getText());
+        return newMessage.getText();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        ChatbotChatPage that = (ChatbotChatPage) o;
-        return Objects.equals(chatbotResponse, that.chatbotResponse);
+    public void sendMessageToChatbot() {
+        questionField.sendKeys(QUESTION_TO_CHATBOT);
+        submitButton.click();
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(chatbotResponse);
+    void closeChatbotPage() {
+        driver.quit();
     }
 }
+
+
+
