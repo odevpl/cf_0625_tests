@@ -56,17 +56,12 @@ public class ChatbotChatPage extends AbstractWebDriverPom {
 
         List<WebElement> updatedMessages = driver.findElements(By.cssSelector("#chat-box > div"));
         WebElement newMessage = updatedMessages.get(updatedMessages.size() - 1);
-        System.out.println(newMessage.getText());
         return newMessage.getText();
     }
 
     public void sendMessageToChatbot() {
         questionField.sendKeys(QUESTION_TO_CHATBOT);
         submitButton.click();
-    }
-
-    void closeChatbotPage() {
-        driver.quit();
     }
 }
 
