@@ -11,14 +11,15 @@ import org.openqa.selenium.chrome.ChromeDriver;
 class LoginPagePomTest {
 
     private WebDriver driver;
-    private ChatbotLoginPom loginPage;
+    private LoginPagePom loginPage;
+    private ChatbotLoginPom chatBotLoginPom;
 
     @BeforeEach
     void setUp() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.get("http://localhost:5000/login");
-        loginPage = new ChatbotLoginPom(driver);
+        loginPage = new LoginPagePom(driver);
     }
 
     @AfterEach
@@ -30,7 +31,7 @@ class LoginPagePomTest {
 
     @Test
     void testLoginFormIsVisible() {
-        Assertions.assertTrue(loginPage.findLoginForm(), "Formularz logowania powinien być widoczny");
+        Assertions.assertTrue(chatBotLoginPom.findLoginForm(), "Login form should be visible");
     }
 
     @Test
@@ -40,7 +41,7 @@ class LoginPagePomTest {
         loginPage.submitForm();
 
         String currentUrl = driver.getCurrentUrl();
-        Assertions.assertNotNull(currentUrl, "URL nie powinien być nullem");
-        Assertions.assertTrue(currentUrl.contains("/login"), "URL powinien zawierać /login");
+        Assertions.assertNotNull(currentUrl, "URL shouldn't be null");
+        Assertions.assertTrue(currentUrl.contains("/login"), "URL should have /login");
     }
 }

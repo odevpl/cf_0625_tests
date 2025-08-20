@@ -7,14 +7,6 @@ import org.openqa.selenium.support.PageFactory;
 
 public class ChatbotLoginPom extends AbstractWebDriverPom {
 
-    @FindBy(id = "email")
-    WebElement emailInput;
-
-    @FindBy(id = "password")
-    WebElement passwordInput;
-
-    @FindBy(xpath = "/html/body/form/button")
-    WebElement loginButton;
 
     @FindBy(xpath = "/html/body/form")
     WebElement loginForm;
@@ -27,17 +19,4 @@ public class ChatbotLoginPom extends AbstractWebDriverPom {
         return loginForm.isDisplayed();
     }
 
-    public void enterEmail(String email) {
-        emailInput.clear();
-        emailInput.sendKeys(email);
-    }
-
-    public void enterPassword(String password) {
-        passwordInput.clear();
-        passwordInput.sendKeys(password);
-    }
-
-    public void submitForm() {
-        loginButton.click();
-    }
 }
