@@ -5,19 +5,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import net.bytebuddy.agent.VirtualMachine;
-import org.apache.el.parser.Token;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.startsWith;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ConversationsHistoryTest {
 
@@ -36,11 +36,9 @@ class ConversationsHistoryTest {
 
         Response loginResponse =
                 given()
-                        .log().all()
                         .contentType(ContentType.JSON)
                         .body(loginBody)
                         .when()
-                        .log().all()
                         .post("/login")
                         .then()
                         .log().all()
@@ -52,7 +50,6 @@ class ConversationsHistoryTest {
 
     @Test
     void chatGetEndpointTest() {
-        RestAssured.baseURI = "http://localhost:5000";
 
         given()
                 .when()
@@ -62,23 +59,21 @@ class ConversationsHistoryTest {
 
     @Test
     void shouldReturn200StatusCodeWhenUserIsLoggedInTest() {
-        RestAssured.baseURI = "http://localhost:5000";
 
         Map<String, Object> postBody = new HashMap<>();
         postBody.put("email", "testAga@test.com");
         postBody.put("password", "gaga5");
 
-        given().contentType(ContentType.JSON).
-                and().body(postBody).
-                when().post("/login")
-                .then().statusCode(200).
-                and().body("message", is("Login successful"))
+        given().contentType(ContentType.JSON)
+                .and().body(postBody)
+                .when().post("/login")
+                .then().statusCode(200)
+                .and().body("message", is("Login successful"))
                 .and().body("user_id", is(3));
     }
 
     @Test
     void shouldReturn200StatusCodeWhenPostMessageToChat() throws JsonProcessingException {
-        RestAssured.baseURI = "http://localhost:5000";
 
         Map<String, Object> postBody = new HashMap<>();
         postBody.put("user", "testAga@test.com");
@@ -102,19 +97,33 @@ class ConversationsHistoryTest {
     }
 
     @Test
-    void shouldReturn200StatusCodeWhenGetConversationsEndpointTest() {
-        RestAssured.baseURI = "http://localhost:5000";
+    void shouldValidateConversationsFieldsTest() {
         Response response =
                 given()
                         .header("Authorization", "Bearer " + TOKEN)
-                        .log().all()
                         .when()
                         .get("/conversations")
                         .then()
                         .statusCode(200)
+                        .body("[0].pytanie", equalTo("hello bot"))
+                        .body("[0].odpowiedz", notNullValue())
+                        .body("[0].data", notNullValue())
                         .extract().response();
 
-        String answer = response.jsonPath().getString("[0].odpowiedz");
-        assertEquals("Przepraszam, jeszcze się uczę. Spróbuj inaczej.", answer);
+        //validate message/answer/timestamp
+        List<String> dates = response.jsonPath().getList("data");
+        List<String> answers = response.jsonPath().getList("odpowiedz");
+        List<String> questions = response.jsonPath().getList("pytanie");
+
+        //checking if the number of answers is the same as the number of questions
+        assertEquals(dates.size(), answers.size());
+        assertEquals(answers.size(), questions.size());
+
+        //validating fields/for now every answer is the same
+        for (int i = 0; i < dates.size(); i++) {
+            assertNotNull(dates.get(i), "field 'date' is not null: " + i);
+            assertEquals("Przepraszam, jeszcze się uczę. Spróbuj inaczej.", answers.get(i));
+            assertEquals("hello bot", questions.get(i));
+        }
     }
 }
