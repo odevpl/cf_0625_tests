@@ -17,10 +17,6 @@ public class ConversationPomTest {
     private WebDriver driver;
     private ConversationPom conversationPom;
 
-//    @BeforeAll
-//    void setupDriver() {
-//        WebDriverManager.chromedriver().setup();
-//    }
 
     @BeforeEach
     void setup() {
@@ -64,6 +60,18 @@ public class ConversationPomTest {
             LocalDateTime next = conversations.get(i + 1).date;
             assertTrue(current.isAfter(next) || current.isEqual(next),
                     "Conversations should be sorted descending by date");
+        }
+    }
+
+    @Test
+    void testConversationsAreSortedByDateAscending() {
+        List<ConversationPom.Conversation> conversations = conversationPom.getConversations();
+
+        for (int i = 0; i < conversations.size() - 1; i++) {
+            LocalDateTime current = conversations.get(i).date;
+            LocalDateTime next = conversations.get(i + 1).date;
+            assertTrue(current.isBefore(next) || current.isEqual(next),
+                    "Conversations should be sorted ascending by date");
         }
     }
 }
