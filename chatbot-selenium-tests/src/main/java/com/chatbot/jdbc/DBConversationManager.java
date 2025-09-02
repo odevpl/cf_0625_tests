@@ -1,6 +1,5 @@
-package com.chatbot.selenium.pom.conversationDB;
+package com.chatbot.jdbc;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,12 +12,10 @@ public class DBConversationManager {
 
     private DBConversationManager() throws SQLException {
         Properties connectionProps = new Properties();
-        connectionProps.put("email", "testAga@gmail.com");
+        connectionProps.put("email", "testAga@test.com");
         connectionProps.put("password", "gaga5");
-        conn = DriverManager.getConnection("jdbc:sqlite:/C:\\Users\\Dell\\PycharmProjects\\cf_0625\\config\\chatbot.db?serverTimezone=Europe/Warsaw" + "&useSSL=False", connectionProps);
+        conn = DriverManager.getConnection("jdbc:sqlite:/C:\\Users\\Dell\\PycharmProjects\\cf_0625\\chatbot.db", connectionProps);
 
-        File file = new File("C:\\Users\\Dell\\PycharmProjects\\cf_0625\\config\\chatbot.db");
-        System.out.println("Exists: " + file.exists());
     }
 
     public static DBConversationManager getInstance() throws SQLException {

@@ -1,4 +1,4 @@
-package com.chatbot.selenium.pom.conversationDB;
+package com.chatbot.jdbc;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
