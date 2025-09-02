@@ -20,6 +20,7 @@ class LoginPagePomTest {
         driver = new ChromeDriver();
         driver.get("http://localhost:5000/login");
         loginPage = new LoginPagePom(driver);
+        chatBotLoginPom = new ChatbotLoginPom(driver);
     }
 
     @AfterEach
