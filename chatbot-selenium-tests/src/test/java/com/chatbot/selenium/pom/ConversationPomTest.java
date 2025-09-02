@@ -1,8 +1,6 @@
 package com.chatbot.selenium.pom;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
@@ -13,7 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ConversationPomTest {
+class ConversationPomTest {
     private WebDriver driver;
     private ConversationPom conversationPom;
 
@@ -23,7 +21,7 @@ public class ConversationPomTest {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
 
-        driver.get("http://localhost:8080/conversations");
+        driver.get("http://localhost:5000/conversations");
         conversationPom = new ConversationPom(driver);
     }
 
