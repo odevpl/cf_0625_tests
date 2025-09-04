@@ -14,8 +14,7 @@ public class DBConversationManager {
         Properties connectionProps = new Properties();
         connectionProps.put("email", "testAga@test.com");
         connectionProps.put("password", "gaga5");
-        conn = DriverManager.getConnection("jdbc:sqlite:/C:\\Users\\Dell\\PycharmProjects\\cf_0625\\chatbot.db", connectionProps);
-
+        conn = DriverManager.getConnection("jdbc:sqlite:C:/Users/Dell/PycharmProjects/cf_0625/config/chatbot.db", connectionProps);
     }
 
     public static DBConversationManager getInstance() throws SQLException {
