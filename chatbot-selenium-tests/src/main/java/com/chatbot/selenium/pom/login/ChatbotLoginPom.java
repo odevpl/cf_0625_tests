@@ -8,6 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 
 public class ChatbotLoginPom extends AbstractWebDriverPom {
 
+
     @FindBy(xpath = "/html/body/form")
     WebElement loginForm;
 
@@ -18,4 +19,5 @@ public class ChatbotLoginPom extends AbstractWebDriverPom {
     public boolean findLoginForm(){
         return loginForm.isDisplayed();
     }
+
 }
