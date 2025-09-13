@@ -1,5 +1,6 @@
-package com.chatbot.selenium.pom;
+package com.chatbot.selenium.pom.login;
 
+import com.chatbot.selenium.pom.AbstractWebDriverPom;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
